@@ -1,3 +1,19 @@
+# Tapuino-Bare
+
+This is a fork of original Tapuino project: https://github.com/sweetlilmre/tapuino
+
+Two main goals are here:
+
+* to make Tapuino code runnable on hardwares built around bare AVR chips, first ATMega644/1284
+
+* to make Tapuino possible to use withold 8-bit computers with simple magnetophone (audio) interface 
+
+Additionally minor comfort changes or bugfixes would be implemented. Hungarian interface language is still to be included.
+
+
+***
+
+
 # Tapuino
 
 This project is now in maintanence mode and has been superseeded by the [Tapuino Next](https://github.com/sweetlilmre/TapuinoNext)
