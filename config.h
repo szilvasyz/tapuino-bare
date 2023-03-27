@@ -15,7 +15,8 @@
   #endif
 #endif
 
-#if defined(TAPUINO_LANGUAGE_EN) + defined(TAPUINO_LANGUAGE_ES) + defined(TAPUINO_LANGUAGE_IT) + defined(TAPUINO_LANGUAGE_TR) + defined(TAPUINO_LANGUAGE_DE) != 1
+#if defined(TAPUINO_LANGUAGE_EN) + defined(TAPUINO_LANGUAGE_ES) + defined(TAPUINO_LANGUAGE_IT) +\
+    defined(TAPUINO_LANGUAGE_TR) + defined(TAPUINO_LANGUAGE_DE) + defined(TAPUINO_LANGUAGE_HU) != 1
   #error Either no or multiple languages defined! Have you created your config-user.h file?
 #endif
 
@@ -39,6 +40,10 @@
 #define KEY_REPEAT_NEXT     300  // milliseconds, granularity 10ms
 #define REC_FINALIZE_TIME   2000 // milliseconds, granularity 10ms
 
+
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+#warning "Using ATmega328 pins"
+
 // TWI for pullups
 #define TWI_PORT            PORTC
 #define TWI_PIN_SDA         4
@@ -48,15 +53,11 @@
 #define SENSE_PORT          PORTD
 #define SENSE_DDR           DDRD
 #define SENSE_PIN           5
-#define SENSE_ON()          SENSE_PORT &= ~_BV(SENSE_PIN)
-#define SENSE_OFF()         SENSE_PORT |=  _BV(SENSE_PIN)
 
 #define TAPE_READ_PORT      PORTD
 #define TAPE_READ_DDR       DDRD
 #define TAPE_READ_PIN       3
 #define TAPE_READ_PINS      PIND
-#define TAPE_READ_LOW()     TAPE_READ_PORT &= ~_BV(TAPE_READ_PIN)
-#define TAPE_READ_HIGH()    TAPE_READ_PORT |=  _BV(TAPE_READ_PIN)
 
 #define TAPE_WRITE_PORT     PORTB
 #define TAPE_WRITE_DDR      DDRB
@@ -67,20 +68,15 @@
 #define MOTOR_DDR           DDRD
 #define MOTOR_PIN           4
 #define MOTOR_PINS          PIND
-#define MOTOR_IS_OFF()      (MOTOR_PINS & _BV(MOTOR_PIN))
 
 #define CONTROL_PORT        PORTD
 #define CONTROL_DDR         DDRD
 #define CONTROL_PIN0        6
 #define CONTROL_PIN1        7
-#define CONTROL_SET_BUS0()  CONTROL_PORT &= ~(_BV(CONTROL_PIN0) | _BV(CONTROL_PIN1))
-#define CONTROL_SET_BUS1()  { CONTROL_PORT &= ~_BV(CONTROL_PIN1); CONTROL_PORT |= _BV(CONTROL_PIN0); }
 
 #define REC_LED_PORT        PORTD
 #define REC_LED_DDR         DDRD
 #define REC_LED_PIN         2
-#define REC_LED_OFF()       REC_LED_PORT |= _BV(REC_LED_PIN)
-#define REC_LED_ON()        REC_LED_PORT &= ~_BV(REC_LED_PIN)
 
  // comment this line if you are using HW1.0
 #define KEYS_INPUT_PULLUP
@@ -91,6 +87,72 @@
 #define KEY_ABORT_PIN       2
 #define KEY_PREV_PIN        1
 #define KEY_NEXT_PIN        0
+
+
+#elif defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)
+#warning "Using ATmega644/1284 pins"
+
+// TWI for pullups
+#define TWI_PORT            PORTC
+#define TWI_PIN_SDA         1
+#define TWI_PIN_SCL         0
+
+// port definitions, change for different wiring
+#define SENSE_PORT          PORTD
+#define SENSE_DDR           DDRD
+#define SENSE_PIN           5
+
+#define TAPE_READ_PORT      PORTD
+#define TAPE_READ_DDR       DDRD
+#define TAPE_READ_PIN       3
+#define TAPE_READ_PINS      PIND
+
+#define TAPE_WRITE_PORT     PORTD
+#define TAPE_WRITE_DDR      DDRD
+#define TAPE_WRITE_PINS     PIND
+#define TAPE_WRITE_PIN      6
+
+#define MOTOR_PORT          PORTD
+#define MOTOR_DDR           DDRD
+#define MOTOR_PIN           4
+#define MOTOR_PINS          PIND
+
+#define CONTROL_PORT        PORTB
+#define CONTROL_DDR         DDRB
+#define CONTROL_PIN0        2
+#define CONTROL_PIN1        3 
+
+#define REC_LED_PORT        PORTD
+#define REC_LED_DDR         DDRD
+#define REC_LED_PIN         2
+
+ // comment this line if you are using HW1.0
+#define KEYS_INPUT_PULLUP
+#define KEYS_READ_PORT      PORTC
+#define KEYS_READ_DDR       DDRC
+#define KEYS_READ_PINS      PINC
+#define KEY_SELECT_PIN      5
+#define KEY_ABORT_PIN       4
+#define KEY_PREV_PIN        3
+#define KEY_NEXT_PIN        2
+
+#else
+#error "Unknown chip!"
+#endif
+
+#define SENSE_ON()          SENSE_PORT &= ~_BV(SENSE_PIN)
+#define SENSE_OFF()         SENSE_PORT |=  _BV(SENSE_PIN)
+
+#define TAPE_READ_LOW()     TAPE_READ_PORT &= ~_BV(TAPE_READ_PIN)
+#define TAPE_READ_HIGH()    TAPE_READ_PORT |=  _BV(TAPE_READ_PIN)
+
+#define MOTOR_IS_OFF()      (MOTOR_PINS & _BV(MOTOR_PIN))
+
+#define CONTROL_SET_BUS0()  CONTROL_PORT &= ~(_BV(CONTROL_PIN0) | _BV(CONTROL_PIN1))
+#define CONTROL_SET_BUS1()  { CONTROL_PORT &= ~_BV(CONTROL_PIN1); CONTROL_PORT |= _BV(CONTROL_PIN0); }
+
+#define REC_LED_OFF()       REC_LED_PORT |= _BV(REC_LED_PIN)
+#define REC_LED_ON()        REC_LED_PORT &= ~_BV(REC_LED_PIN)
 
 // debugging
 //#define ENABLE_SERIAL
