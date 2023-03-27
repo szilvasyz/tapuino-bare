@@ -70,7 +70,77 @@ uint8_t backslashChar[8] = {
     0b00000
 };
 
+uint8_t aebetu[8] = {
+    
+    0b00010,
+    0b00100,
+    0b01110,
+    0b00001,
+    0b01111,
+    0b10001,
+    0b01111,
+    0b00000
+};
 
+uint8_t eebetu[8] = {
+    
+    0b00010,
+    0b00100,
+    0b01110,
+    0b10001,
+    0b11111,
+    0b10000,
+    0b01110,
+    0b00000
+};
+
+uint8_t ooebetu[8] = {
+    
+    0b01010,
+    0b00000,
+    0b01110,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b01110,
+    0b00000
+};
+
+uint8_t uuebetu[8] = {
+    
+    0b01010,
+    0b00000,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b01110,
+    0b00000
+};
+
+uint8_t uebetu[8] = {
+    
+    0b00010,
+    0b00100,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b01110,
+    0b00000
+};
+
+uint8_t oebetu[8] = {
+    
+    0b00010,
+    0b00100,
+    0b01110,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b01110,
+    0b00000
+};
 // When the display powers up, it is configured as follows:
 //
 // 1. Display clear
@@ -112,6 +182,12 @@ void lcd_createChar(uint8_t location, uint8_t charmap[]);
 void lcd_write(uint8_t value) {
   // replace backslash with redefined char
   if (value == '\\') value = 0x01;
+  if (value == 0xe1) value = 0x02; //á
+  if (value == 0xe9) value = 0x03; //é
+  if (value == 0xf6) value = 0x04; //ö
+  if (value == 0xfc) value = 0x05; //ü
+  if (value == 0xfa) value = 0x06; //ú
+  if (value == 0xf3) value = 0x07; //ó
 	send(value, _BV(LCD_BIT_RS));
 }
 
@@ -125,6 +201,12 @@ void lcd_init(uint8_t lcd_addr) {
   lcd_begin(lcd_addr, MAX_LCD_LINE_LEN, LCD_NUM_LINES, LCD_5x8DOTS);
   // can't define this as the zeroth character as zero is null in strings :)! :)
   lcd_createChar(1, backslashChar);
+  lcd_createChar(2, aebetu);
+  lcd_createChar(3, eebetu);
+  lcd_createChar(4, ooebetu);
+  lcd_createChar(5, uuebetu);
+  lcd_createChar(6, uebetu);
+  lcd_createChar(7, oebetu);
 }
 
 void lcd_begin(uint8_t lcd_addr, uint8_t cols, uint8_t lines, uint8_t dotsize) {

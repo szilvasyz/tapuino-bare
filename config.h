@@ -16,7 +16,8 @@
 #endif
 
 #if defined(TAPUINO_LANGUAGE_EN) + defined(TAPUINO_LANGUAGE_ES) + defined(TAPUINO_LANGUAGE_IT) +\
-    defined(TAPUINO_LANGUAGE_TR) + defined(TAPUINO_LANGUAGE_DE) + defined(TAPUINO_LANGUAGE_HU) != 1
+    defined(TAPUINO_LANGUAGE_TR) + defined(TAPUINO_LANGUAGE_DE) + defined(TAPUINO_LANGUAGE_HU) +\
+    defined(TAPUINO_LANGUAGE_HU_ANSI) != 1
   #error Either no or multiple languages defined! Have you created your config-user.h file?
 #endif
 
