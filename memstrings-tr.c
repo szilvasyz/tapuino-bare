@@ -29,6 +29,7 @@ const char S_OPTION_KEY_REPEAT[] PROGMEM = "Tus hizi";
 const char S_OPTION_TICKER_SPEED[] PROGMEM = "Kayma hizi";
 const char S_OPTION_TICKER_HOLD[] PROGMEM = "Kayma bekleme";
 const char S_OPTION_REC_FINALIZE[] PROGMEM = "Kaydi sonlandir";
+const char S_OPTION_REC_AUTO_FINALIZE[] PROGMEM = "Otomatik sonl.";
 
 const char S_MKDIR_FAILED[] PROGMEM = "MKDIR hatasi!";
 const char S_CHDIR_FAILED[] PROGMEM = "CHDIR hatasi!";
