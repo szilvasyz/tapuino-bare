@@ -30,6 +30,7 @@ const char S_OPTION_TICKER_SPEED[] PROGMEM = "Vel. Ticker";
 const char S_OPTION_TICKER_HOLD[] PROGMEM = "Sos. Ticker";
 const char S_OPTION_REC_FINALIZE[] PROGMEM = "Fin Grabacion";
 const char S_OPTION_REC_AUTO_FINALIZE[] PROGMEM = "Auto-Finalizar";
+const char S_OPTION_MOTOR_CTL[] PROGMEM = "Ctl. Motor";
 
 const char S_MKDIR_FAILED[] PROGMEM = "Fallo en MKDIR!";
 const char S_CHDIR_FAILED[] PROGMEM = "Fallo en CHDIR!";

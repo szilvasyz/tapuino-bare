@@ -26,6 +26,7 @@
 #define OPTION_TICKER_HOLD  5
 #define OPTION_REC_FINALIZE 6
 #define OPTION_REC_AUTO_FINALIZE 7
+#define OPTION_MOTOR_CTL 8
 
 #define SELECT_MODE_EXIT 0xFF
 
@@ -358,13 +359,15 @@ uint8_t handle_option_enum(const char* poption, uint16_t* pcur_value, uint16_t m
 }
 
 void handle_mode_options() {
-  const char* ppitems[] = {S_OPTION_MACHINE_TYPE, S_OPTION_VIDEO_MODE, S_OPTION_SIGNAL, S_OPTION_KEY_REPEAT, S_OPTION_TICKER_SPEED, S_OPTION_TICKER_HOLD, S_OPTION_REC_FINALIZE, S_OPTION_REC_AUTO_FINALIZE};
+  const char* ppitems[] = {S_OPTION_MACHINE_TYPE, S_OPTION_VIDEO_MODE, S_OPTION_SIGNAL, 
+                           S_OPTION_KEY_REPEAT, S_OPTION_TICKER_SPEED, S_OPTION_TICKER_HOLD, 
+                           S_OPTION_REC_FINALIZE, S_OPTION_REC_AUTO_FINALIZE, S_OPTION_MOTOR_CTL};
   uint16_t value = 0;
   uint8_t save = 0;
   uint8_t cur_mode = 0;
   
   while (1) {
-    cur_mode = handle_select_mode(S_MODE_OPTIONS, ppitems, 8, cur_mode);
+    cur_mode = handle_select_mode(S_MODE_OPTIONS, ppitems, 9, cur_mode);
     switch (cur_mode) {
       case OPTION_MACHINE_TYPE:
       {
@@ -430,6 +433,13 @@ void handle_mode_options() {
         value = g_rec_auto_finalize;
         if (handle_option_value(S_OPTION_REC_AUTO_FINALIZE, &value, 0, 1, 1)) {
           g_rec_auto_finalize = value;
+          save = 1;
+        }
+      break;
+      case OPTION_MOTOR_CTL:
+        value = g_motor_ctl;
+        if (handle_option_value(S_OPTION_MOTOR_CTL, &value, 0, 1, 1)) {
+          g_motor_ctl = value;
           save = 1;
         }
       break;
