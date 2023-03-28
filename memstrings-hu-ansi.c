@@ -38,13 +38,14 @@ const char S_OPTION_TICKER_SPEED[] PROGMEM = "Ticker sebess"ee"g";
 const char S_OPTION_TICKER_HOLD[] PROGMEM = "Ticker hold";
 const char S_OPTION_REC_FINALIZE[] PROGMEM = "Ment"ee"s befejez"ee"s";
 const char S_OPTION_REC_AUTO_FINALIZE[] PROGMEM = "Auto befejez"ee"s";
+const char S_OPTION_MOTOR_CTL[] PROGMEM = "Motorvez"ee"rl"ee"s";
 
 const char S_MKDIR_FAILED[] PROGMEM = "MKDIR hiba!";
 const char S_CHDIR_FAILED[] PROGMEM = "CHDIR hiba!";
 const char S_READ_FAILED[] PROGMEM = "READ hiba!";
 const char S_OPEN_FAILED[] PROGMEM = "OPEN hiba!";
-const char S_INVALID_TAP[] PROGMEM = "Nem val"oo"s TAP!";
-const char S_INVALID_SIZE[] PROGMEM = "Nem val"oo"s m"ee"ret!";
+const char S_INVALID_TAP[] PROGMEM = "Hib"aa"s TAP!";
+const char S_INVALID_SIZE[] PROGMEM = "Hib"aa"s m"ee"ret!";
 
 const char S_LOADING[] PROGMEM = "T"oe"lt:";
 const char S_OPERATION_COMPLETE[] PROGMEM = "K"ee"sz!";
