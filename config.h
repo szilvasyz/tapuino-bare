@@ -90,8 +90,11 @@
 #define KEY_NEXT_PIN        0
 
 
-#elif defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)
-#warning "Using ATmega644/1284 pins"
+#elif defined(__AVR_ATmega32__)  || \
+      defined(__AVR_ATmega324A__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324PA__) || \
+      defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) || \
+      defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)
+#warning "Using ATmega32/324/644/1284 pins"
 
 // TWI for pullups
 #define TWI_PORT            PORTC
