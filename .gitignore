@@ -25,3 +25,4 @@
 # Target directory
 target/
 config-user.h
+.DS_Store

@@ -265,19 +265,32 @@ ISR(TIMER2_COMPA_vect) {
 }
 
 void disk_timer_setup() {
+#if defined(__AVR_ATmega32__)
+  TCCR2 = 0;
+
+  OCR2 = F_CPU / 1024 / 100 - 1; // 100Hz timer
+  TCCR2 = _BV(WGM21);            // CTC Mode
+  TCCR2 |=  (1 << CS22) | (1 << CS21) | (1 << CS20);  //pre-scaler 1024 
+  TIMSK |= _BV(OCIE2);
+#else
   TCCR2A = 0;
   TCCR2B = 0;
-  
+
   OCR2A = F_CPU / 1024 / 100 - 1; // 100Hz timer
   TCCR2A = _BV(WGM21);            // CTC Mode
   TCCR2B |=  (1 << CS22) | (1 << CS21) | (1 << CS20);  //pre-scaler 1024 
   TIMSK2 |= _BV(OCIE2A);
+#endif
 }
 
 void signal_timer_start(uint8_t recording) {
   TCCR1A = 0x00;   // clear timer registers
   TCCR1B = 0x00;
+#if defined(__AVR_ATmega32__)
+  TIMSK &= (1 << TICIE1) | (1 << OCIE1A) | (1 << OCIE1B) | (1 << TOIE1);
+#else
   TIMSK1 = 0x00;
+#endif
   TCNT1  = 0x00;
 
   if (recording) {
@@ -286,18 +299,30 @@ void signal_timer_start(uint8_t recording) {
     if (!g_invert_signal) {
       TCCR1B |= _BV(ICES1);             // switch to RISING edge
     }
+#if defined(__AVR_ATmega32__)
+    TIMSK |= _BV(TICIE1) | _BV(TOIE1);  // input capture interrupt enable, overflow interrupt enable
+#else
     TIMSK1 = _BV(ICIE1) | _BV(TOIE1);   // input capture interrupt enable, overflow interrupt enable
+#endif
   } else {
     g_total_timer_count = 0;
     TCCR1B |=  _BV(CS11) | _BV(WGM12);  // pre-scaler 8 = 2 MHZ, CTC Mode
     OCR1A = 0xFFFF;
+#if defined(__AVR_ATmega32__)
+    TIMSK |=  _BV(OCIE1A);              // output compare interrupt
+#else
     TIMSK1 |=  _BV(OCIE1A);             // output compare interrupt
+#endif
   }
 }
 
 void signal_timer_stop() {
   // stop all timer1 interrupts
+#if defined(__AVR_ATmega32__)
+  TIMSK &= (1 << TICIE1) | (1 << OCIE1A) | (1 << OCIE1B) | (1 << TOIE1);
+#else
   TIMSK1 = 0;
+#endif
 }
 
 int verify_tap(FILINFO* pfile_info) {
