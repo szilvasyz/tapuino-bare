@@ -258,7 +258,11 @@ ISR(TIMER1_COMPA_vect) {
 }
 
 
+#if defined(__AVR_ATmega32__)
+ISR(TIMER2_COMP_vect) {
+#else
 ISR(TIMER2_COMPA_vect) {
+#endif
   disk_timerproc(); // Drive timer procedure for FatFs low level disk I/O module
   input_callback();
   g_timer_tick++;   // system ticker for timing
@@ -287,7 +291,7 @@ void signal_timer_start(uint8_t recording) {
   TCCR1A = 0x00;   // clear timer registers
   TCCR1B = 0x00;
 #if defined(__AVR_ATmega32__)
-  TIMSK &= (1 << TICIE1) | (1 << OCIE1A) | (1 << OCIE1B) | (1 << TOIE1);
+  TIMSK &= ~((1 << TICIE1) | (1 << OCIE1A) | (1 << OCIE1B) | (1 << TOIE1));
 #else
   TIMSK1 = 0x00;
 #endif
@@ -319,7 +323,7 @@ void signal_timer_start(uint8_t recording) {
 void signal_timer_stop() {
   // stop all timer1 interrupts
 #if defined(__AVR_ATmega32__)
-  TIMSK &= (1 << TICIE1) | (1 << OCIE1A) | (1 << OCIE1B) | (1 << TOIE1);
+  TIMSK &= ~((1 << TICIE1) | (1 << OCIE1A) | (1 << OCIE1B) | (1 << TOIE1));
 #else
   TIMSK1 = 0;
 #endif
@@ -765,6 +769,11 @@ void tapuino_run()
   FILINFO file_info;
   file_info.lfname = (TCHAR*)g_fat_buffer;
   file_info.lfsize = sizeof(g_fat_buffer);
+
+#ifdef ENABLE_SERIAL
+  serial_init();
+  serial_println("start");
+#endif
 
   if (!tapuino_hardware_setup()) {
     lcd_title_P(S_INIT_FAILED);

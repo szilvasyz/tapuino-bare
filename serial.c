@@ -7,6 +7,19 @@
 
 #ifdef ENABLE_SERIAL
 
+#if defined(__AVR_ATmega32__)
+#define UDR0 UDR
+#define UCSR0A UCSRA
+#define UCSR0B UCSRB
+#define UCSR0C UCSRC
+#define UBRR0L UBRRL
+#define UBRR0H UBRRH
+#define RXEN0 RXEN
+#define TXEN0 TXEN
+#define RXCIE0 RXCIE
+#define UDRIE0 UDRIE
+#endif
+
 #define USART_BAUDRATE 57600
 #define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
 
@@ -18,7 +31,11 @@ void serial_init( void )
 
   DDRD |= _BV( 1 );
   UCSR0B |= _BV( RXEN0 ) | _BV( TXEN0 );          // Turn on the transmission and reception circuitry
+#if defined(__AVR_ATmega32__)
+  UCSRC = _BV(URSEL) | _BV( UCSZ0 ) | _BV( UCSZ1 );        // Use 8-bit character sizes
+#else
   UCSR0C |= _BV( UCSZ00 ) | _BV( UCSZ01 );        // Use 8-bit character sizes
+#endif
   UBRR0H = (unsigned char) (BAUD_PRESCALE >> 8);  // Load upper 8-bits of the baud rate value into the high byte of the UBRR register
   UBRR0L = (unsigned char) BAUD_PRESCALE;         // Load lower 8-bits of the baud rate value into the low byte of the UBRR register
   
@@ -103,4 +120,3 @@ ISR(USART_UDRE_vect)
 }
 
 #endif //ENABLE_SERIAL
-
