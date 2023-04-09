@@ -6,7 +6,7 @@ Two main goals are here:
 
 * to make Tapuino code runnable on hardwares built around bare AVR chips, first ATMega644/1284
 
-* to make Tapuino possible to use withold 8-bit computers with simple magnetophone (audio) interface 
+* to make Tapuino possible to use with old 8-bit computers equipped with simple magnetophone (audio) interface 
 
 Additionally minor comfort changes or bugfixes would be implemented. Hungarian interface language is still to be included.
 
