@@ -72,6 +72,10 @@ void lcd_init(uint8_t lcd_addr) {
  sendCommand(0x0C);  	// **** Turn on Display
 }
 
+void lcd_clear() {
+  
+}
+
 void sendData(uint8_t data)
 {
 	i2c_start((_addr << 1) | I2C_WRITE);

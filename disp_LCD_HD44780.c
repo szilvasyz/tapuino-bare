@@ -59,88 +59,42 @@
 #define LCD_5x10DOTS 0x04
 #define LCD_5x8DOTS 0x00
 
-uint8_t backslashChar[8] = {
-    0b00000,
-    0b10000,
-    0b01000,
-    0b00100,
-    0b00010,
-    0b00001,
-    0b00000,
-    0b00000
+
+// user defined characters for better mapping latin-1
+// usrchr num: 01234567
+// latin char: áéóúÁÉÖÜ
+const uint8_t userchars [] PROGMEM = {
+    0b00010, 0b00100, 0b01110, 0b00001, 0b01111, 0b10001, 0b01111, 0b00000, // a/
+    0b00010, 0b00100, 0b01110, 0b10001, 0b11111, 0b10000, 0b01110, 0b00000, // e/
+    0b00010, 0b00100, 0b01110, 0b10001, 0b10001, 0b10001, 0b01110, 0b00000, // o/
+    0b00010, 0b00100, 0b10001, 0b10001, 0b10001, 0b10011, 0b01101, 0b00000, // u/
+    0b00100, 0b01110, 0b10101, 0b10001, 0b11111, 0b10001, 0b10001, 0b00000, // A/
+    0b00100, 0b11111, 0b10100, 0b10000, 0b11110, 0b10000, 0b11111, 0b00000, // E/
+    0b01010, 0b01110, 0b10001, 0b10001, 0b10001, 0b10001, 0b01110, 0b00000, // O:
+    0b01010, 0b10001, 0b10001, 0b10001, 0b10001, 0b10001, 0b01110, 0b00000  // U:
 };
 
-uint8_t aebetu[8] = {
-    
-    0b00010,
-    0b00100,
-    0b01110,
-    0b00001,
-    0b01111,
-    0b10001,
-    0b01111,
-    0b00000
+// latin-1 character mapping to HD44780-A00
+const uint8_t charmap[] PROGMEM = {
+    0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
+    0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
+    0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
+    0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
+    0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F,
+    0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0xA4, 0x5D, 0x5E, 0x5F,
+    0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
+    0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x3F, 0x3F,    
+    0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
+    0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
+    0x20, 0x3F, 0xEC, 0xED, 0x3F, 0x5C, 0x7C, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0xB0, 0x3F, 0x3F,
+    0xDF, 0x3F, 0x3F, 0x3F, 0x3F, 0xE4, 0xF7, 0xA5, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+    0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x43, 0x05, 0x05, 0x05, 0x05, 0x49, 0x49, 0x49, 0x49,
+    0x44, 0x4E, 0x4F, 0x4F, 0x06, 0x06, 0x06, 0xEB, 0x3F, 0x55, 0x55, 0x07, 0x07, 0x59, 0x3F, 0xE2,
+    0x00, 0x00, 0x00, 0x00, 0xE1, 0x00, 0x00, 0x63, 0x01, 0x01, 0x01, 0x01, 0x69, 0x69, 0x69, 0x69,
+    0x64, 0xEE, 0x02, 0x02, 0xEF, 0xEF, 0xEF, 0xFD, 0x3F, 0x03, 0x03, 0xF5, 0xF5, 0x79, 0x62, 0x79
 };
 
-uint8_t eebetu[8] = {
-    
-    0b00010,
-    0b00100,
-    0b01110,
-    0b10001,
-    0b11111,
-    0b10000,
-    0b01110,
-    0b00000
-};
 
-uint8_t ooebetu[8] = {
-    
-    0b01010,
-    0b00000,
-    0b01110,
-    0b10001,
-    0b10001,
-    0b10001,
-    0b01110,
-    0b00000
-};
-
-uint8_t uuebetu[8] = {
-    
-    0b01010,
-    0b00000,
-    0b10001,
-    0b10001,
-    0b10001,
-    0b10001,
-    0b01110,
-    0b00000
-};
-
-uint8_t uebetu[8] = {
-    
-    0b00010,
-    0b00100,
-    0b10001,
-    0b10001,
-    0b10001,
-    0b10001,
-    0b01110,
-    0b00000
-};
-
-uint8_t oebetu[8] = {
-    
-    0b00010,
-    0b00100,
-    0b01110,
-    0b10001,
-    0b10001,
-    0b10001,
-    0b01110,
-    0b00000
-};
 // When the display powers up, it is configured as follows:
 //
 // 1. Display clear
@@ -167,6 +121,8 @@ uint8_t _displaymode;
 uint8_t _numlines;
 uint8_t _cols;
 uint8_t _rows;
+uint8_t _col;
+uint8_t _row;
 uint8_t _backlightval;
 
 void send(uint8_t value, uint8_t mode);
@@ -177,18 +133,20 @@ void lcd_begin(uint8_t lcd_addr, uint8_t cols, uint8_t lines, uint8_t dotsize);
 void lcd_display();
 void lcd_clear();
 void lcd_home();
-void lcd_createChar(uint8_t location, uint8_t charmap[]);
+//void lcd_createChar(uint8_t location, uint8_t charmap[]);
+
 
 void lcd_write(uint8_t value) {
-  // replace backslash with redefined char
-  if (value == '\\') value = 0x01;
-  if (value == 0xe1) value = 0x02; //á
-  if (value == 0xe9) value = 0x03; //é
-  if (value == 0xf6) value = 0x04; //ö
-  if (value == 0xfc) value = 0x05; //ü
-  if (value == 0xfa) value = 0x06; //ú
-  if (value == 0xf3) value = 0x07; //ó
-	send(value, _BV(LCD_BIT_RS));
+  // replace character with mapping latin-1 char
+  value = pgm_read_byte(&charmap[value]);
+  send(value, _BV(LCD_BIT_RS));
+
+  if (++_col >= _cols) {
+    _col = 0;
+    if (++_row >= _rows)
+      _row = 0;
+    lcd_setCursor(_col, _row); 
+  }
 }
 
 // mid level commands, for sending data/cmds 
@@ -199,14 +157,14 @@ void command(uint8_t value) {
 
 void lcd_init(uint8_t lcd_addr) {
   lcd_begin(lcd_addr, MAX_LCD_LINE_LEN, LCD_NUM_LINES, LCD_5x8DOTS);
-  // can't define this as the zeroth character as zero is null in strings :)! :)
-  lcd_createChar(1, backslashChar);
-  lcd_createChar(2, aebetu);
-  lcd_createChar(3, eebetu);
-  lcd_createChar(4, ooebetu);
-  lcd_createChar(5, uuebetu);
-  lcd_createChar(6, uebetu);
-  lcd_createChar(7, oebetu);
+
+  // defining all 8 user chars at once
+  int i;
+  command(LCD_SETCGRAMADDR);
+  for (i = 0; i < 64; i++) {
+    send(pgm_read_byte(&userchars[i]), _BV(LCD_BIT_RS));
+  }
+  command(LCD_SETDDRAMADDR);
 }
 
 void lcd_begin(uint8_t lcd_addr, uint8_t cols, uint8_t lines, uint8_t dotsize) {
@@ -279,18 +237,21 @@ void lcd_begin(uint8_t lcd_addr, uint8_t cols, uint8_t lines, uint8_t dotsize) {
 void lcd_clear() {
 	command(LCD_CLEARDISPLAY);// clear display, set cursor position to zero
 	_delay_us(2000);  // this command takes a long time!
+	_col = 0; _row = 0;
 }
 
 void lcd_home() {
 	command(LCD_RETURNHOME);  // set cursor position to zero
 	_delay_us(2000);  // this command takes a long time!
+  _col = 0; _row = 0;
 }
 
 void lcd_setCursor(uint8_t col, uint8_t row) {
 	int row_offsets[] = { 0x00, 0x40, 0x14, 0x54 };
-	if ( row > _numlines ) {
-		row = _numlines - 1;    // we count rows starting w/0
+	if ( row >= _rows ) {
+		row = _rows - 1;    // we count rows starting w/0
 	}
+  _col = col; _row = row;
 	command(LCD_SETDDRAMADDR | (col + row_offsets[row]));
 }
 
@@ -317,14 +278,14 @@ void lcd_cursor() {
 
 // Allows us to fill the first 8 CGRAM locations
 // with custom characters
-void lcd_createChar(uint8_t location, uint8_t charmap[]) {
+/* void lcd_createChar(uint8_t location, uint8_t charmap[]) {
   int i;
 	location &= 0x7; // we only have 8 locations 0-7
 	command(LCD_SETCGRAMADDR | (location << 3));
 	for (i = 0; i < 8; i++) {
 		lcd_write(charmap[i]);
 	}
-}
+} */
 
 // Turn the (optional) backlight off/on
 void lcd_noBacklight(void) {

@@ -5,13 +5,21 @@
 #include "config-user.h"
 
 // thanks stack overflow: http://stackoverflow.com/questions/4301471/c-macro-to-test-if-more-than-one-defined
-#if defined(LCD_USE_SSD1306_OLED_MODULE) + defined(LCD_USE_1602_LCD_MODULE) + defined(LCD_USE_SSD131X_OLED_MODULE) != 1
+#if defined(LCD_USE_SSD1306_OLED_MODULE) + defined(LCD_USE_1602_LCD_MODULE) + \
+    defined(LCD_USE_SSD131X_OLED_MODULE) + defined(LCD_USE_ST7920_LCD_MODULE) +\
+    defined(LCD_USE_SH1106_OLED_MODULE) != 1
   #error Ether no or multiple LCD types defined! Have you created your config-user.h file?
 #endif
 
 #if defined(LCD_USE_SSD1306_OLED_MODULE)
   #if defined(LCD_SSD1306_128x64) + defined(LCD_SSD1306_128x32) != 1
     #error When using the SSD1306 module, define EITHER: LCD_SSD1306_128x64 or LCD_SSD1306_128x32 depending on your module type
+  #endif
+#endif
+
+#if defined(LCD_USE_SH1106_OLED_MODULE)
+  #if defined(LCD_SH1106_128x64) + defined(LCD_SH1106_128x32) != 1
+    #error When using the SH1106 module, define EITHER: LCD_SH1106_128x64 or LCD_SH1106_128x32 depending on your module type
   #endif
 #endif
 
@@ -91,6 +99,7 @@
 
 
 #elif defined(__AVR_ATmega32__)  || \
+      defined(__AVR_ATmega16__)  || \
       defined(__AVR_ATmega324A__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324PA__) || \
       defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) || \
       defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)

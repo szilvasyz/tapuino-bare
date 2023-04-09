@@ -5,7 +5,8 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 #include "i2c_master.h"
-#include "font8x8.h"
+//#include "font8x8.h"
+#include "orig8x8-iso8859-2.h"
 
 #define NUM_COLS  16
 #define NUM_ROWS  2
@@ -60,7 +61,7 @@ const uint8_t ssd1306_init_sequence [] PROGMEM = {
   SSD1306_SEGREMAP | 0x01,              // 0xA0 Set Segment Re-map. A0=address mapped; A1=address 127 mapped. 
   SSD1306_COMSCANDEC,                   // 0xC8 Set COM Output Scan Direction - descending
 #if defined LCD_SSD1306_128x64  
-#ifdef LCD_SSD1306_BIG_FONTS
+#ifdef LCD_BIG_FONTS
   SSD1306_SETCOMPINS,           0x02,   // 0xDA Set com pins hardware configuration
 #else
   SSD1306_SETCOMPINS,           0x12,   // 0xDA Set com pins hardware configuration
@@ -85,8 +86,6 @@ void lcd_init(uint8_t lcd_addr)
 {
   uint8_t i;
   _addr = lcd_addr;
-  _row = 0;
-  _col = 0;
   _displayCursor = 0;
   
   i2c_init();
@@ -95,6 +94,12 @@ void lcd_init(uint8_t lcd_addr)
   for (i = 0; i < sizeof (ssd1306_init_sequence); i++) {
     ssd1306_send_command(pgm_read_byte(&ssd1306_init_sequence[i]));
   }
+  lcd_clear();
+}
+
+void lcd_clear() {
+  _row = 0;
+  _col = 0;
   ssd1306_fillscreen(0);
   memset(_buffer, 32, NUM_CHARS);
 }
