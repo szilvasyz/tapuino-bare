@@ -9,6 +9,8 @@
 
 // uncomment one of these sets for your specific LCD
 
+// #define I2C_LOWSPEED             // define this to use I2C with 100kHz
+
 // #define LCD_USE_1602_LCD_MODULE
 // #define LCD_I2C_ADDR        0x27 // I2C address for the LCD
 
@@ -28,22 +30,23 @@
 
 // #define LCD_USE_SH1106_OLED_MODULE
 // #define LCD_I2C_ADDR        0x3C // I2C address for the OLED
-// #define LCD_BIG_FONTS            // define this for ... bigger fonts...
+// #define LCD_BIG_FONTS            // define this for bigger fonts...
+// #define LCD_HUGE_FONTS           // define this for more bigger fonts...
 // choose one of these depending on your display
 // #define LCD_SH1106_128x64
 // #define LCD_SH1106_128x32
 // #define LCD_SH1106_COLOFFSET 2   // column offset, SH1106 has 132 columns
 // #define LCD_SH1106_UPSIDEDOWN    // rotate with 180 degrees
-// #define LCD_SH1106_SSD1306INIT   // rotate with 180 degrees
+// #define LCD_SH1106_SSD1306INIT   // enable additional commands for initing SSD1306 
 
-#define LCD_USE_ILI9341_TFT_MODULE
-#define BGCOLOR 0xFFFF00         // optional background RGB color - actually yellow
-#define FGCOLOR 0xFF0000         // optional foreground RGB color - actually red
-#define LCD_WIDTH 320            // optional horizontal pixels 
-#define LCD_HEIGHT 240           // optional vertical pixels 
-#define LCD_UPSIDEDOWN           // rotate image with 180 degrees
-#define LCD_BIG_FONTS            // define this for double height fonts...
-#define LCD_HUGE_FONTS           // define this for quadruple height fonts...
+// #define LCD_USE_ILI9341_TFT_MODULE
+// #define BGCOLOR 0xFFFF00         // optional background RGB color - actually yellow
+// #define FGCOLOR 0xFF0000         // optional foreground RGB color - actually red
+// #define LCD_WIDTH 320            // optional horizontal pixels 
+// #define LCD_HEIGHT 240           // optional vertical pixels 
+// #define LCD_UPSIDEDOWN           // rotate image with 180 degrees
+// #define LCD_BIG_FONTS            // define this for double height fonts...
+// #define LCD_HUGE_FONTS           // define this for quadruple height fonts...
 
 /********************************************************************************/
 // Language Definitions

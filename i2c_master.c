@@ -10,6 +10,7 @@
 #include <compat/twi.h>
 
 #include "i2c_master.h"
+#include "config.h"
 
 
 /* define CPU frequency in Mhz here if not defined in Makefile */
@@ -17,8 +18,13 @@
 #define F_CPU 4000000UL
 #endif
 
+#ifdef I2C_LOWSPEED
 /* I2C clock in Hz */
-#define SCL_CLOCK  10000UL
+/* corrected to 100kHz */
+#define SCL_CLOCK  100000UL
+#else
+#define SCL_CLOCK  400000UL
+#endif
 
 
 /*************************************************************************

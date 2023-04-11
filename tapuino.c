@@ -396,6 +396,8 @@ int play_file(FILINFO* pfile_info)
     return 0;
   }
 
+  PLAY_LED_ON();
+  
   // verify_tap() has read the full buffer (FAT_BUF_SIZE) into g_fat_buffer (or failed).
   UINT br = FAT_BUF_SIZE;
 
@@ -481,6 +483,8 @@ int play_file(FILINFO* pfile_info)
   
   // switch off read LED
   TAPE_READ_LOW();
+
+  PLAY_LED_OFF();
   
   // prevent leakage of g_cur_command, the standard mechanism is to use get_cur_command() which would clear the global
   g_cur_command = COMMAND_IDLE;
@@ -647,6 +651,7 @@ void load_eeprom_data() {
     
     g_ticker_rate = eeprom_read_byte((uint8_t *) 3);
     g_ticker_hold_rate = eeprom_read_byte((uint8_t *) 4);
+    g_invert_signal = eeprom_read_byte((uint8_t *) 5);
     // g_key_repeat_start = eeprom_read_byte((uint8_t *) 5);
     g_key_repeat_next = eeprom_read_byte((uint8_t *) 6);
     g_rec_finalize_time = eeprom_read_byte((uint8_t *) 7);
@@ -662,6 +667,7 @@ void save_eeprom_data() {
   eeprom_update_byte((uint8_t *) 2, g_video_mode);
   eeprom_update_byte((uint8_t *) 3, g_ticker_rate);
   eeprom_update_byte((uint8_t *) 4, g_ticker_hold_rate);
+  eeprom_update_byte((uint8_t *) 5, g_invert_signal);
   // eeprom_update_byte((uint8_t *) 5, g_key_repeat_start);
   eeprom_update_byte((uint8_t *) 6, g_key_repeat_next);
   eeprom_update_byte((uint8_t *) 7, g_rec_finalize_time);
@@ -706,6 +712,9 @@ int tapuino_hardware_setup(void)
   // recording led (Arduino: D2, Atmel: PD2)
   REC_LED_DDR |= _BV(REC_LED_PIN);
   REC_LED_OFF();
+
+  PLAY_LED_SETUP();
+  PLAY_LED_OFF();
   
   // keys are all inputs, activate pullups
   KEYS_READ_DDR &= ~_BV(KEY_SELECT_PIN);

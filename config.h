@@ -97,6 +97,10 @@
 #define REC_LED_DDR         DDRD
 #define REC_LED_PIN         2
 
+#define PLAY_LED_SETUP()    {}
+#define PLAY_LED_OFF()      {}
+#define PLAY_LED_ON()       {}
+
  // comment this line if you are using HW1.0
 #define KEYS_INPUT_PULLUP
 #define KEYS_READ_PORT      PORTC
@@ -148,6 +152,14 @@
 #define REC_LED_PORT        PORTD
 #define REC_LED_DDR         DDRD
 #define REC_LED_PIN         2
+
+#define PLAY_LED_PORT        PORTB
+#define PLAY_LED_DDR         DDRB
+#define PLAY_LED_PIN         0
+
+#define PLAY_LED_SETUP()     PLAY_LED_DDR  |= _BV(PLAY_LED_PIN)
+#define PLAY_LED_OFF()       PLAY_LED_PORT |= _BV(PLAY_LED_PIN)
+#define PLAY_LED_ON()        PLAY_LED_PORT &= ~_BV(PLAY_LED_PIN)
 
  // comment this line if you are using HW1.0
 #define KEYS_INPUT_PULLUP
