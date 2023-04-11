@@ -7,7 +7,7 @@
 // thanks stack overflow: http://stackoverflow.com/questions/4301471/c-macro-to-test-if-more-than-one-defined
 #if defined(LCD_USE_SSD1306_OLED_MODULE) + defined(LCD_USE_1602_LCD_MODULE) + \
     defined(LCD_USE_SSD131X_OLED_MODULE) + defined(LCD_USE_ST7920_LCD_MODULE) +\
-    defined(LCD_USE_SH1106_OLED_MODULE) != 1
+    defined(LCD_USE_SH1106_OLED_MODULE) + defined(LCD_USE_ILI9341_TFT_MODULE) != 1
   #error Ether no or multiple LCD types defined! Have you created your config-user.h file?
 #endif
 
@@ -22,6 +22,16 @@
     #error When using the SH1106 module, define EITHER: LCD_SH1106_128x64 or LCD_SH1106_128x32 depending on your module type
   #endif
 #endif
+
+#ifndef LCD_I2C_ADDR
+  #ifdef LCD_USE_ILI9341_TFT_MODULE
+    // ILI9341 has no I2C address, must define a fake one for lcd_init() call
+    #define LCD_I2C_ADDR 0x00
+  #else
+    #error "You have to define I2C address of the display!"
+  #endif
+#endif
+    
 
 #if defined(TAPUINO_LANGUAGE_EN) + defined(TAPUINO_LANGUAGE_ES) + defined(TAPUINO_LANGUAGE_IT) +\
     defined(TAPUINO_LANGUAGE_TR) + defined(TAPUINO_LANGUAGE_DE) + defined(TAPUINO_LANGUAGE_HU) +\
@@ -149,6 +159,18 @@
 #define KEY_PREV_PIN        3
 #define KEY_NEXT_PIN        2
 
+// RST, CS and D/C pins for some displays 
+#define LCD_DC_PORT         PORTA
+#define LCD_DC_DDR          DDRA
+#define LCD_DC_PIN          2
+
+#define LCD_CS_PORT         PORTA
+#define LCD_CS_DDR          DDRA
+#define LCD_CS_PIN          0
+
+#define LCD_RST_PORT        PORTA
+#define LCD_RST_DDR         DDRA
+#define LCD_RST_PIN         1
 #else
 #error "Unknown chip!"
 #endif

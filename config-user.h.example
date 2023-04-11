@@ -36,6 +36,15 @@
 // #define LCD_SH1106_UPSIDEDOWN    // rotate with 180 degrees
 // #define LCD_SH1106_SSD1306INIT   // rotate with 180 degrees
 
+#define LCD_USE_ILI9341_TFT_MODULE
+#define BGCOLOR 0xFFFF00         // optional background RGB color - actually yellow
+#define FGCOLOR 0xFF0000         // optional foreground RGB color - actually red
+#define LCD_WIDTH 320            // optional horizontal pixels 
+#define LCD_HEIGHT 240           // optional vertical pixels 
+#define LCD_UPSIDEDOWN           // rotate image with 180 degrees
+#define LCD_BIG_FONTS            // define this for double height fonts...
+#define LCD_HUGE_FONTS           // define this for quadruple height fonts...
+
 /********************************************************************************/
 // Language Definitions
 /********************************************************************************/
