@@ -184,15 +184,6 @@ void lcd_init(uint8_t lcd_addr) {
   int p, i;
   uint8_t d;
 
-  LCD_DC_DDR  |= _BV(LCD_DC_PIN);
-  LCD_DC_PORT |= _BV(LCD_DC_PIN);
-
-  LCD_CS_DDR  |= _BV(LCD_CS_PIN);
-  LCD_CS_PORT |= _BV(LCD_CS_PIN);
-
-  LCD_RST_DDR  |= _BV(LCD_RST_PIN);
-  LCD_RST_PORT |= _BV(LCD_RST_PIN);
-
   SPI_Init();
   SPI_Speed_Fast();
 

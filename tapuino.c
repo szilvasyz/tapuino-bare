@@ -697,7 +697,19 @@ int tapuino_hardware_setup(void)
   // enable TWI pullups
   TWI_PORT |= _BV(TWI_PIN_SDA);
   TWI_PORT |= _BV(TWI_PIN_SCL);
-    
+
+  // initialize additional SPI display signals to HIGH
+#ifdef LCD_CS_PORT
+  LCD_CS_DDR  |= _BV(LCD_CS_PIN);
+  LCD_CS_PORT |= _BV(LCD_CS_PIN);
+
+  LCD_DC_DDR  |= _BV(LCD_DC_PIN);
+  LCD_DC_PORT |= _BV(LCD_DC_PIN);
+
+  LCD_RST_DDR  |= _BV(LCD_RST_PIN);
+  LCD_RST_PORT |= _BV(LCD_RST_PIN);
+#endif
+
   // sense is output to C64
   SENSE_DDR |= _BV(SENSE_PIN);
   SENSE_OFF();
@@ -743,6 +755,7 @@ int tapuino_hardware_setup(void)
   KEYS_READ_PORT |= _BV(KEY_NEXT_PIN);
   
   disk_timer_setup();
+  disk_initialize(0);
   
 //  serial_init();
 //  serial_println_P(S_INIT);
@@ -753,8 +766,7 @@ int tapuino_hardware_setup(void)
   lcd_title_P(S_INIT);
   sprintf_P((char*) g_fat_buffer, S_VERSION_PATTERN, TAPUINO_MAJOR_VERSION, TAPUINO_MINOR_VERSION, TAPUINO_BUILD_VERSION);
   lcd_status((char*) g_fat_buffer);
-  _delay_ms(2000);
-  
+  _delay_ms(1000);
   
   // something (possibly) dodgy in the bootloader causes a fail on cold boot.
   // retrying here seems to fix it (could just be the bootloader on my cheap Chinese clone?)
@@ -763,9 +775,9 @@ int tapuino_hardware_setup(void)
     _delay_ms(200);
     if (res == FR_OK) break;
   }
-  
+
+  SPI_Speed_Fast();
   if (res == FR_OK) {
-    SPI_Speed_Fast();
     // attempt to open the recording dir
     strcpy_P((char*)g_fat_buffer, S_DEFAULT_RECORD_DIR);
     res = f_opendir(&g_dir, (char*)g_fat_buffer);
