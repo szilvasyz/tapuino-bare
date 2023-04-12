@@ -31,6 +31,7 @@ const char S_OPTION_TICKER_HOLD[] PROGMEM = "Ticker-Pause";
 const char S_OPTION_REC_FINALIZE[] PROGMEM = "Finalisieren";
 const char S_OPTION_REC_AUTO_FINALIZE[] PROGMEM = "Automatisch fin.";
 const char S_OPTION_MOTOR_CTL[] PROGMEM = "Motor kon.";
+const char S_OPTION_REC_TYPE[] PROGMEM = "Aufgen. version";
 
 const char S_MKDIR_FAILED[] PROGMEM = "MKDIR Fehler";
 const char S_CHDIR_FAILED[] PROGMEM = "CHDIR Fehler";

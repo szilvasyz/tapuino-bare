@@ -16,6 +16,7 @@ extern volatile uint16_t g_key_repeat_next;
 extern volatile uint16_t g_rec_finalize_time;
 extern volatile uint8_t g_rec_auto_finalize;
 extern volatile uint8_t g_motor_ctl;
+extern volatile uint8_t g_record_type;
 extern uint8_t g_machine_type;
 extern uint8_t g_video_mode;
 extern volatile uint8_t g_is_paused;

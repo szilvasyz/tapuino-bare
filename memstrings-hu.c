@@ -31,6 +31,7 @@ const char S_OPTION_TICKER_HOLD[] PROGMEM = "Utem tartas";
 const char S_OPTION_REC_FINALIZE[] PROGMEM = "Felv. lezaras";
 const char S_OPTION_REC_AUTO_FINALIZE[] PROGMEM = "Auto lezaras";
 const char S_OPTION_MOTOR_CTL[] PROGMEM = "Motorvezerles";
+const char S_OPTION_REC_TYPE[] PROGMEM = "Felvetel verzio";
 
 const char S_MKDIR_FAILED[] PROGMEM = "MKDIR hiba!";
 const char S_CHDIR_FAILED[] PROGMEM = "CHDIR hiba!";

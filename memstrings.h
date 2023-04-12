@@ -33,6 +33,7 @@ extern const char S_OPTION_TICKER_HOLD[];
 extern const char S_OPTION_REC_FINALIZE[];
 extern const char S_OPTION_REC_AUTO_FINALIZE[];
 extern const char S_OPTION_MOTOR_CTL[];
+extern const char S_OPTION_REC_TYPE[];
 
 
 extern const char S_MKDIR_FAILED[];

@@ -87,6 +87,7 @@ static double g_cycle_mult_8 = 0;               // multiplier to convert an 8 bi
 
 volatile uint8_t g_invert_signal = 0;           // invert the signal for transmission/reception to/from a real Datasette
 volatile uint8_t g_motor_ctl = 1;               // is motor control coming from computer?
+volatile uint8_t g_record_type = 1;             // version of recorded TAP
 
 // all rate values are stored as milliseconds / 10.
 // the global ticker runs at 100Hz which then maps 1-1 with these values
@@ -142,6 +143,9 @@ uint32_t get_timer_tick() {
 // on rising edge of signal from C64
 ISR(TIMER1_CAPT_vect) {
   uint32_t tap_data;
+
+  if (g_record_type == 2)
+    TCCR1B ^= _BV(ICES1);             // toggle edge sensing in case of TAP ver 2
 
   if(g_signal_2nd_half) {                             // finished measuring 
     g_pulse_length = ICR1;                            // pulse length = ICR1 i.e. timer count
@@ -543,7 +547,8 @@ void record_file(char* pfile_name) {
   }
   buffer_magic[1] = TAP_MAGIC_POSTFIX1;             // copy the magic to the buffer: "TAPE"
   buffer_magic[2] = TAP_MAGIC_POSTFIX2;             // copy the magic to the buffer: "-RAW"
-  g_fat_buffer[12] = 0x01;                          // get to the end of the magic and set TAP format to 1
+//  g_fat_buffer[12] = 0x01;                          // get to the end of the magic and set TAP format to 1
+  g_fat_buffer[12] = g_record_type;                   // get to the end of the magic and set TAP format (1 or 2 by option)
   f_write(&g_fil, (void*)g_fat_buffer, 20, &br);    // write out the header with zero length field
   memset (g_fat_buffer, 0, sizeof(g_fat_buffer));   // clear it all out again for the read / write operation
 
@@ -657,6 +662,12 @@ void load_eeprom_data() {
     g_rec_finalize_time = eeprom_read_byte((uint8_t *) 7);
     g_rec_auto_finalize = eeprom_read_byte((uint8_t *) 8);
     g_motor_ctl = eeprom_read_byte((uint8_t *) 9);
+    g_record_type = eeprom_read_byte((uint8_t *) 10);
+    if (g_invert_signal > 1) 
+      g_invert_signal = 0;
+    if ((g_record_type != 1) && (g_record_type != 2))
+      g_record_type = 1;
+    
   }
 }
 
@@ -673,6 +684,7 @@ void save_eeprom_data() {
   eeprom_update_byte((uint8_t *) 7, g_rec_finalize_time);
   eeprom_update_byte((uint8_t *) 8, g_rec_auto_finalize);
   eeprom_update_byte((uint8_t *) 9, g_motor_ctl);
+  eeprom_update_byte((uint8_t *) 10, g_record_type);
 }
 
 int tapuino_hardware_setup(void)
@@ -713,7 +725,8 @@ int tapuino_hardware_setup(void)
   REC_LED_DDR |= _BV(REC_LED_PIN);
   REC_LED_OFF();
 
-  PLAY_LED_SETUP();
+  // playback led
+  PLAY_LED_DDR  |= _BV(PLAY_LED_PIN);
   PLAY_LED_OFF();
   
   // keys are all inputs, activate pullups

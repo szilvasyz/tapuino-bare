@@ -39,6 +39,7 @@ const char S_OPTION_TICKER_HOLD[] PROGMEM = "Ticker hold";
 const char S_OPTION_REC_FINALIZE[] PROGMEM = "Ment"ee"s befejez"ee"s";
 const char S_OPTION_REC_AUTO_FINALIZE[] PROGMEM = "Auto befejez"ee"s";
 const char S_OPTION_MOTOR_CTL[] PROGMEM = "Motorvez"ee"rl"ee"s";
+const char S_OPTION_REC_TYPE[] PROGMEM = "Felv"ee"tel verzi"oo"";
 
 const char S_MKDIR_FAILED[] PROGMEM = "MKDIR hiba!";
 const char S_CHDIR_FAILED[] PROGMEM = "CHDIR hiba!";

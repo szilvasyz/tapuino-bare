@@ -97,9 +97,9 @@
 #define REC_LED_DDR         DDRD
 #define REC_LED_PIN         2
 
-#define PLAY_LED_SETUP()    {}
-#define PLAY_LED_OFF()      {}
-#define PLAY_LED_ON()       {}
+#define PLAY_LED_PORT       PORTB
+#define PLAY_LED_DDR        DDRB
+#define PLAY_LED_PIN        1
 
  // comment this line if you are using HW1.0
 #define KEYS_INPUT_PULLUP
@@ -153,13 +153,9 @@
 #define REC_LED_DDR         DDRD
 #define REC_LED_PIN         2
 
-#define PLAY_LED_PORT        PORTB
-#define PLAY_LED_DDR         DDRB
-#define PLAY_LED_PIN         0
-
-#define PLAY_LED_SETUP()     PLAY_LED_DDR  |= _BV(PLAY_LED_PIN)
-#define PLAY_LED_OFF()       PLAY_LED_PORT |= _BV(PLAY_LED_PIN)
-#define PLAY_LED_ON()        PLAY_LED_PORT &= ~_BV(PLAY_LED_PIN)
+#define PLAY_LED_PORT       PORTB
+#define PLAY_LED_DDR        DDRB
+#define PLAY_LED_PIN        0
 
  // comment this line if you are using HW1.0
 #define KEYS_INPUT_PULLUP
@@ -198,8 +194,21 @@
 #define CONTROL_SET_BUS0()  CONTROL_PORT &= ~(_BV(CONTROL_PIN0) | _BV(CONTROL_PIN1))
 #define CONTROL_SET_BUS1()  { CONTROL_PORT &= ~_BV(CONTROL_PIN1); CONTROL_PORT |= _BV(CONTROL_PIN0); }
 
+#ifdef INVERT_PLAY_LED
+#define PLAY_LED_OFF()       PLAY_LED_PORT &= ~_BV(PLAY_LED_PIN)
+#define PLAY_LED_ON()        PLAY_LED_PORT |= _BV(PLAY_LED_PIN)
+#else
+#define PLAY_LED_ON()        PLAY_LED_PORT &= ~_BV(PLAY_LED_PIN)
+#define PLAY_LED_OFF()       PLAY_LED_PORT |= _BV(PLAY_LED_PIN)
+#endif
+
+#ifdef INVERT_REC_LED
+#define REC_LED_ON()        REC_LED_PORT |= _BV(REC_LED_PIN)
+#define REC_LED_OFF()       REC_LED_PORT &= ~_BV(REC_LED_PIN)
+#else
 #define REC_LED_OFF()       REC_LED_PORT |= _BV(REC_LED_PIN)
 #define REC_LED_ON()        REC_LED_PORT &= ~_BV(REC_LED_PIN)
+#endif
 
 // debugging
 //#define ENABLE_SERIAL

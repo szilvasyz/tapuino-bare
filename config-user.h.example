@@ -48,6 +48,10 @@
 // #define LCD_BIG_FONTS            // define this for double height fonts...
 // #define LCD_HUGE_FONTS           // define this for quadruple height fonts...
 
+// uncomment the appropriate lines to invert REC or PLAY LEDs
+// #define INVERT_REC_LED
+// #define INVERT_PLAY_LED
+
 /********************************************************************************/
 // Language Definitions
 /********************************************************************************/
